@@ -1,57 +1,30 @@
-import Image from "next/image";
+import Link from "next/link";
+import Post from "./post/post";
+import process from 'process';
+import getPosts from "./api/authors";
 
-type Todo ={
-  toDoID:string;
-  toDoDescription:string;
-  toDoCategory:string;
+
+
+const Page = async () => {
+
+    const posts = await getPosts()
+
+    return (
+        <div className='w-[1200px] flex flex-col justify-start items-center mx-auto py-20 gap-10'>
+
+            <h3>Total Data of Authors : {posts?.length}</h3>
+
+            <Link href={"/create"} className='w-[150px] mx-10 px-3 py-2 bg-zinc-900 hover:bg-zinc-800 rounded-md text-white'>Create</Link>
+
+
+            <div className='grid grid-cols-3 gap-5 mt-8'>
+
+                {posts?.map((post: any, i: number) => (
+                    <Post key={i} post={post} />
+                )).sort().reverse()}
+            </div>
+        </div>
+    )
 }
 
-
-interface values {
-  path1:string;
-  path2:string;
-  path3:string;
-}
-
-interface Objects{
-  name:string;
-  values:values;
-}
-
-
-
-export default function Home() {
-
-  const objects:Objects = {
-    name : "Home",
-    values : {
-      path1 : "A",
-      path2 : "B",
-      path3 : "C",
-    },
-  }
-
-  const {name, ...withoutName}:Pick<Objects, "name"> = objects;
-
-  console.log(withoutName);
-
-
-  /** 
-   * !Hi THis code is awesome 
-   * @hello world
-   * ? this is awesome code 
-   * *better comments using
-  */
-
-
-
-
-
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
-      <h3 className="text-4xl">Next.js Project Demo</h3>
-
-    </main>
-  );
-}
+export default Page
